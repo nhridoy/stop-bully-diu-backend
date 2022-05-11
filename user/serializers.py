@@ -25,7 +25,7 @@ class NewUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.User
-        fields = ['username', 'email', 'full_name', 'password', 'password2']
+        fields = ['username', 'email', 'full_name', 'student_id', 'password', 'password2']
 
         extra_kwargs = {
             'full_name': {'required': True},
@@ -36,12 +36,15 @@ class NewUserSerializer(serializers.ModelSerializer):
             raise validators.ValidationError({'password': "Password Doesn't Match"})
         if models.User.objects.filter(username=attrs['username']).exists():
             raise validators.ValidationError({'username': 'user with this User ID already exists.'})
+        if models.User.objects.filter(student_id=attrs['student_id']).exists():
+            raise validators.ValidationError({'student_id': 'user with this Student ID already exists.'})
         return attrs
 
     def create(self, validated_data):
         user = models.User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
+            student_id=validated_data['student_id'],
             full_name=validated_data['full_name'],
         )
         user.set_password(validated_data['password'])

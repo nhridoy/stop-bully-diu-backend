@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
     This is the manager for custom user model
     """
 
-    def create_user(self, username, email, full_name, password=None):
+    def create_user(self, username, email, full_name, student_id, password=None):
 
         if not username:
             raise ValueError('Username should not be empty')
@@ -18,6 +18,8 @@ class UserManager(BaseUserManager):
             raise ValueError('Email should not be empty')
         if not full_name:
             raise ValueError('Name should not be empty')
+        if not student_id:
+            raise ValueError('Student ID should not be empty')
         if not password:
             raise ValueError('Password should not be empty')
 
@@ -51,16 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=100, verbose_name='Email', unique=True, blank=True)
     full_name = models.CharField(verbose_name='Full Name', max_length=100)
     phone_number = models.CharField(max_length=255, verbose_name="Phone Number")
-    address_one = models.CharField(max_length=255, blank=True)
-    address_two = models.CharField(max_length=255, blank=True)
-    city = models.CharField(max_length=255, blank=True)
-    zipcode = models.CharField(max_length=255, null=True, blank=True)
-    country = models.CharField(
-        verbose_name="Country", max_length=50, blank=True)
-    profile_pic = models.ImageField(
-        upload_to='users/', default='users/default.png')
-    birth_date = models.DateField(
-        verbose_name='Birth Date', blank=True, null=True)
+
     date_joined = models.DateTimeField(
         verbose_name='Date Joined', auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
@@ -70,8 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('Other', 'Other'),
     )
 
-    gender = models.CharField(
-        verbose_name='Choose Gender', choices=gender_options, max_length=20)
+    student_id = models.CharField(max_length=100, unique=True, blank=False)
 
     is_staff = models.BooleanField(verbose_name='Staff Status', default=False, help_text='Designate if the user has '
                                                                                          'staff status')
@@ -82,7 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                                                                                                  'status')
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['full_name', 'username']
+    REQUIRED_FIELDS = ['full_name', 'username', 'student_id']
 
     objects = UserManager()
 
