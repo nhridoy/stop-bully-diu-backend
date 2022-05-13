@@ -13,8 +13,7 @@ class AdminUser(UserAdmin):
         ('Login Info', {'fields': ('username', 'email', 'password')}),
         ('User Information',
          {'fields': (
-             'full_name', 'profile_pic', 'birth_date', 'address_one', 'address_two', 'city', 'zipcode',
-             'student_id', 'phone_number',)}),
+             'full_name', 'student_id', 'phone_number',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
 
     )
