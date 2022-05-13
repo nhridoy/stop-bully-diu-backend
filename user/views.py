@@ -27,6 +27,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
     JWT Custom Token Claims View
     """
     serializer_class = MyTokenObtainPairSerializer
+    token_obtain_pair = TokenObtainPairView.as_view()
 
 
 class NewUserView(generics.ListCreateAPIView):
