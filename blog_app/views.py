@@ -7,6 +7,13 @@ from user import apipermissions as user_per
 
 
 # Create your views here.
+
+class BlogTagsView(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = blog_ser.BlogTagsSerializer
+    queryset = blog_model.BlogTagsModel.objects.all()
+
+
 class BlogPostView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = blog_ser.BlogSerializer
@@ -19,3 +26,33 @@ class BlogPostView(generics.ListCreateAPIView):
         base64_bytes = base64.b64encode(sample_string_bytes)
         slug = base64_bytes.decode("ascii")
         serializer.save(user=self.request.user, slug=slug)
+
+
+class BlogPostUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = blog_ser.BlogSerializer
+    queryset = blog_model.BlogModel.objects.all()
+    lookup_field = 'id'
+
+
+class ForumCategoriesView(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = blog_ser.ForumCategoriesSerializer
+    queryset = blog_model.ForumCategoryModel.objects.all()
+
+
+class ForumPostView(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = blog_ser.ForumSerializer
+    queryset = blog_model.ForumModel.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class ForumPostUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = blog_ser.ForumSerializer
+    queryset = blog_model.ForumModel.objects.all()
+    lookup_field = 'id'
+
