@@ -1,40 +1,23 @@
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework import generics, status, response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
-from user import models, serializers, apipermissions
-from rest_framework import generics, status, response
 
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    """
-    JWT Custom Token Claims Serializer
-    """
-
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        # Add custom claims
-        token['name'] = user.full_name
-        token['email'] = user.email
-        token['is_superuser'] = user.is_superuser
-        token['is_staff'] = user.is_staff
-
-        return token
+from user import models, serializers as user_ser
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
     """
     JWT Custom Token Claims View
     """
-    serializer_class = MyTokenObtainPairSerializer
+    serializer_class = user_ser.CustomTokenObtainPairSerializer
+    token_obtain_pair = TokenObtainPairView.as_view()
 
 
 class NewUserView(generics.ListCreateAPIView):
     """
     New User Create View
     """
-    serializer_class = serializers.NewUserSerializer
+    serializer_class = user_ser.NewUserSerializer
     queryset = models.User.objects.all()
     # permission_classes = [apipermissions.IsSuperUser]
 

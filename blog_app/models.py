@@ -23,7 +23,7 @@ class Category(models.Model):
 
 class Blog(models.Model):
     user = models.ForeignKey(user_model.User, on_delete=models.CASCADE, related_name="user_blog")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category')
+    # category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category')
     # sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name='sub_category')
     blogtitle = models.CharField(max_length=250, verbose_name="BLOG TITLE")
     blogcontent = models.TextField(verbose_name="BLOG CONTENT")

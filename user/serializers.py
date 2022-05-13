@@ -1,8 +1,42 @@
-from rest_framework import serializers, validators
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from rest_framework import serializers
+from rest_framework import validators
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from user import models
+from . import models
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    # info = serializers.CharField(source='permission_user')
+    non_field_errors = {
+        'detail': 'Please verify your mail.'
+    }
+    default_error_messages = {
+        'detail': 'Username or Password does not matched.'
+    }
+
+    def validate(self, attrs):
+        # print(attrs)
+        data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
+        # print(data)
+        if self.user.is_active:
+            request = self.context.get('request')
+
+            obj = {
+                'id': self.user.id,
+                'email': self.user.email,
+                'is_staff': self.user.is_staff,
+                'is_active': self.user.is_active,
+            }
+
+            data.update({'user': obj})
+            return data
+
+        else:
+            msg = "Your account is not active"
+
+        raise serializers.ValidationError({'detail': msg})
 
 
 class NewUserSerializer(serializers.ModelSerializer):
@@ -47,4 +81,3 @@ class NewUserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
-
