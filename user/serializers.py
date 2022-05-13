@@ -15,7 +15,7 @@ class NewUserSerializer(serializers.ModelSerializer):
     )
     username = serializers.CharField(
         required=True,
-        validators=[UnicodeUsernameValidator()]
+        validators=[UnicodeUsernameValidator(), validators.UniqueValidator(queryset=models.User.objects.all())]
     )
 
     password = serializers.CharField(style={'input_type': 'password'}, write_only=True, required=True,
