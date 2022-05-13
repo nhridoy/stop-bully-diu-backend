@@ -27,7 +27,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
     JWT Custom Token Claims View
     """
     serializer_class = MyTokenObtainPairSerializer
-    token_obtain_pair = TokenObtainPairView.as_view()
 
 
 class NewUserView(generics.ListCreateAPIView):
@@ -36,6 +35,7 @@ class NewUserView(generics.ListCreateAPIView):
     """
     serializer_class = serializers.NewUserSerializer
     queryset = models.User.objects.all()
+
     # permission_classes = [apipermissions.IsSuperUser]
 
     def create(self, request, *args, **kwargs):
@@ -50,4 +50,3 @@ class NewUserView(generics.ListCreateAPIView):
 
         return response.Response({'user_data': user_data, 'refresh_token': refresh, 'access_token': access},
                                  status=status.HTTP_201_CREATED)
-
