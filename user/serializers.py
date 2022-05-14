@@ -32,13 +32,18 @@ class NewUserSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, attrs):
+        password = attrs.get('password')
+        if attrs.get('username') == password:
+            raise validators.ValidationError({'password': "username can not be your password"})
+        if attrs.get('email') == password:
+            raise validators.ValidationError({'password': "email can not be your password"})
         if attrs['password'] != attrs['password2']:
             raise validators.ValidationError({'password': "Password Doesn't Match"})
         if models.User.objects.filter(username=attrs['username']).exists():
             raise validators.ValidationError({'username': 'user with this User ID already exists.'})
         if models.User.objects.filter(student_id=attrs['student_id']).exists():
             raise validators.ValidationError({'student_id': 'user with this Student ID already exists.'})
-        return attrs
+        return super(NewUserSerializer, self).validate(attrs)
 
     def create(self, validated_data):
         user = models.User.objects.create(
