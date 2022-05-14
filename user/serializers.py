@@ -15,7 +15,7 @@ class NewUserSerializer(serializers.ModelSerializer):
     )
     username = serializers.CharField(
         required=True,
-        validators=[UnicodeUsernameValidator()]
+        validators=[UnicodeUsernameValidator(), validators.UniqueValidator(queryset=models.User.objects.all())]
     )
 
     password = serializers.CharField(style={'input_type': 'password'}, write_only=True, required=True,
@@ -25,7 +25,7 @@ class NewUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.User
-        fields = ['username', 'email', 'full_name', 'student_id', 'password', 'password2']
+        fields = ['username', 'email', 'full_name', 'phone_number', 'student_id', 'password', 'password2']
 
         extra_kwargs = {
             'full_name': {'required': True},
@@ -50,6 +50,7 @@ class NewUserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             student_id=validated_data['student_id'],
+            phone_number=validated_data['phone_number'],
             full_name=validated_data['full_name'],
         )
         user.set_password(validated_data['password'])
