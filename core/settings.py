@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     # Installed Apps
     'user',
     'blog_app',
+    'complain',
 
     # Third Party
     'rest_framework',
