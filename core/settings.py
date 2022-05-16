@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'user',
     'blog_app',
     'complain',
+    'e_shop',
 
     # Third Party
     'rest_framework',
