@@ -24,7 +24,19 @@ class ForumCategoriesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ForumCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = blog_model.ForumCommentModel
+        fields = '__all__'
+        extra_kwargs = {
+            'user': {'read_only': True},
+            'forum_post': {'read_only': True},
+        }
+
+
 class ForumSerializer(serializers.ModelSerializer):
+    comments = ForumCommentSerializer(read_only=True, many=True)
+
     class Meta:
         model = blog_model.ForumModel
         fields = '__all__'

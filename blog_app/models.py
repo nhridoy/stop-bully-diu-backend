@@ -40,7 +40,7 @@ class ForumModel(models.Model):
 
 
 class ForumCommentModel(models.Model):
-    forum_post = models.ForeignKey(ForumModel, on_delete=models.CASCADE, related_name='forum_post')
+    forum_post = models.ForeignKey(ForumModel, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(user_model.User, on_delete=models.CASCADE, related_name='user_forum_comment')
     comment = models.TextField()
     comment_date = models.DateTimeField(auto_now_add=True)

@@ -50,9 +50,17 @@ class ForumPostView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
+class ForumCommentView(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = blog_ser.ForumCommentSerializer
+    queryset = blog_model.ForumCommentModel.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user, forum_post=blog_model.ForumModel.objects.get(id=self.kwargs['forum_id']))
+
+
 class ForumPostUpdateView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = blog_ser.ForumSerializer
     queryset = blog_model.ForumModel.objects.all()
     lookup_field = 'id'
-

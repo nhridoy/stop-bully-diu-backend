@@ -6,6 +6,7 @@ urlpatterns = [
     path('post/', blog_view.BlogPostView.as_view(), name="post_blog"),
     path('post_update/<id>/', blog_view.BlogPostUpdateView.as_view(), name="post_blog_update"),
     path('forum_post/', blog_view.ForumPostView.as_view(), name="forum_post_article"),
+    path('forum_comment/<int:forum_id>/', blog_view.ForumCommentView.as_view(), name="forum_comment_create"),
     path('forum_cat/', blog_view.ForumCategoriesView.as_view(), name="forum_categories"),
     path('forum_post/<id>/', blog_view.ForumPostUpdateView.as_view(), name="forum_update_article"),
 
