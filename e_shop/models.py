@@ -8,6 +8,7 @@ from django.dispatch import receiver
 
 class ProductsModel(models.Model):
     product_name = models.CharField(max_length=255)
+    product_image = models.ImageField(upload_to="product", blank=True)
     product_code = models.CharField(max_length=255, unique=True, blank=True, null=True)
     product_price = models.FloatField(blank=True, null=True)
     product_desc = models.TextField(blank=True)

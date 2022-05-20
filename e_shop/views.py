@@ -10,3 +10,9 @@ class ProductsView(generics.ListCreateAPIView):
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = e_ser.ProductSerializer
     queryset = e_model.ProductsModel.objects.all()
+
+
+class SingleProductView(generics.RetrieveAPIView):
+    serializer_class = e_ser.ProductSerializer
+    queryset = e_model.ProductsModel.objects.all()
+    lookup_field = 'pk'
