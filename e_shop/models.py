@@ -19,6 +19,5 @@ class ProductsModel(models.Model):
 def update_product_code(sender, instance, created, **kwargs):
     if created:
         product_id = uuid.uuid4()
-        print(instance.product_name.replace(' ', ''))
         instance.product_code = f"{instance.product_name.replace(' ', '')}{(str(product_id)).split('-').pop()}"
         instance.save()

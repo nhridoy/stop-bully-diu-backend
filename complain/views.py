@@ -16,7 +16,13 @@ class ComplainView(generics.CreateAPIView):
 class ComplainListView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAdminUser]
     serializer_class = complain_ser.ComplainSerializer
-    queryset = complain_model.ComplainModel.objects.all()
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            queryset = complain_model.ComplainModel.objects.all()
+        else:
+            queryset = complain_model.ComplainModel.objects.filter(user_id=self.request.user.id)
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -30,3 +36,5 @@ class ComplainStatusView(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
