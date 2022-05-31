@@ -33,7 +33,11 @@ ON_PRODUCTION = os.getenv('ON_PRODUCTION', 'False') == "True"
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+# only use this in production
+if ON_PRODUCTION:
+    SECRET_KEY = env('SECRET_KEY')
+else:
+    SECRET_KEY = '=7&6$@_6d_*6$)%&=wf4+4(!2n_#*_%#^+9&9^!@+!l*!=+!k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
