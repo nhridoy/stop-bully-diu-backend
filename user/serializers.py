@@ -57,3 +57,8 @@ class NewUserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        exclude = ['password', 'user_permissions', 'groups']
