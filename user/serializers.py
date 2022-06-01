@@ -57,3 +57,8 @@ class NewUserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = '__all__'

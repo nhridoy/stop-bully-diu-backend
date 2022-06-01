@@ -2,7 +2,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from user import models, serializers, apipermissions
-from rest_framework import generics, status, response
+from rest_framework import generics, status, response, permissions
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -50,3 +50,20 @@ class NewUserView(generics.ListCreateAPIView):
 
         return response.Response({'user_data': user_data, 'refresh_token': refresh, 'access_token': access},
                                  status=status.HTTP_201_CREATED)
+
+
+class UserInfoView(generics.ListAPIView):
+    serializer_class = serializers.UserInfoSerializer
+    queryset = models.User.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        current_user = self.request.user
+        return self.queryset.filter(id=current_user.id)
+
+
+class UserEditView(generics.RetrieveUpdateAPIView):
+    serializer_class = serializers.UserInfoSerializer
+    queryset = models.User.objects.all()
+    lookup_field = 'id'
+    permission_classes = [permissions.IsAuthenticated]

@@ -53,6 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=100, verbose_name='Email', unique=True, blank=True)
     full_name = models.CharField(verbose_name='Full Name', max_length=100)
     phone_number = models.CharField(max_length=255, verbose_name="Phone Number")
+    profile_pic = models.ImageField(upload_to='media/users', default='users/default.png')
 
     date_joined = models.DateTimeField(
         verbose_name='Date Joined', auto_now_add=True)
