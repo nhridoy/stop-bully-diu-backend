@@ -14,7 +14,7 @@ class ComplainView(generics.CreateAPIView):
 
 
 class ComplainListView(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = complain_ser.ComplainSerializer
 
     def get_queryset(self):
