@@ -18,11 +18,13 @@ class ComplainListView(generics.ListCreateAPIView):
     serializer_class = complain_ser.ComplainSerializer
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            queryset = complain_model.ComplainModel.objects.all()
-        else:
-            queryset = complain_model.ComplainModel.objects.filter(user_id=self.request.user.id)
-        return queryset
+        return (
+            complain_model.ComplainModel.objects.all()
+            if self.request.user.is_superuser
+            else complain_model.ComplainModel.objects.filter(
+                user_id=self.request.user.id
+            )
+        )
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
